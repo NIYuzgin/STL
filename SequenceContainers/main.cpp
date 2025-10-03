@@ -3,6 +3,7 @@
 #include<iostream>
 #include<array>
 #include<vector>
+#include<deque>
 
 //using namespace std;
 
@@ -18,7 +19,7 @@ template<typename T> void vector_info(const std::vector<T>& vec);
 
 
 //#define STL_ARRAY
-#define STL_VECTOR
+//#define STL_VECTOR
 
 
 
@@ -110,9 +111,26 @@ void main() {
 	vec.insert(vec.begin() + index, value );
 	for (int i : vec)cout << i << tab; cout << endl;
 
+	do {
+		cout << "Введите индекс удаляемого элемента: "; cin >> index;
+
+	} while (index > vec.capacity());
+	vec.erase(vec.begin() + index);
+
+
+
+
+
+
 #endif // STL_VECTOR
 
 
+	std::deque<int> deque = { 3, 5, 8, 13, 21 };
+	deque.push_back(34);
+	deque.push_front(2);
+
+
+	//deque_info (deque);
 
 
 
