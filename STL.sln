@@ -1,11 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36203.30 d17.14
+VisualStudioVersion = 17.14.36203.30
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "STL", "STL\STL.vcxproj", "{BF7EAFF6-AB95-4A0A-9BF9-E61845087DA5}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SequenceContainers", "SequenceContainers\SequenceContainers.vcxproj", "{061FE633-6028-4AE3-873A-C25C39E62E45}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AssociativeContainers", "AssociativeContainers\AssociativeContainers.vcxproj", "{8194A505-AA97-4B07-8F83-4D03032B357E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Exceptions", "Exceptions\Exceptions.vcxproj", "{726A859B-22DC-4D9C-9E29-1964709B7050}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +35,22 @@ Global
 		{061FE633-6028-4AE3-873A-C25C39E62E45}.Release|x64.Build.0 = Release|x64
 		{061FE633-6028-4AE3-873A-C25C39E62E45}.Release|x86.ActiveCfg = Release|Win32
 		{061FE633-6028-4AE3-873A-C25C39E62E45}.Release|x86.Build.0 = Release|Win32
+		{8194A505-AA97-4B07-8F83-4D03032B357E}.Debug|x64.ActiveCfg = Debug|x64
+		{8194A505-AA97-4B07-8F83-4D03032B357E}.Debug|x64.Build.0 = Debug|x64
+		{8194A505-AA97-4B07-8F83-4D03032B357E}.Debug|x86.ActiveCfg = Debug|Win32
+		{8194A505-AA97-4B07-8F83-4D03032B357E}.Debug|x86.Build.0 = Debug|Win32
+		{8194A505-AA97-4B07-8F83-4D03032B357E}.Release|x64.ActiveCfg = Release|x64
+		{8194A505-AA97-4B07-8F83-4D03032B357E}.Release|x64.Build.0 = Release|x64
+		{8194A505-AA97-4B07-8F83-4D03032B357E}.Release|x86.ActiveCfg = Release|Win32
+		{8194A505-AA97-4B07-8F83-4D03032B357E}.Release|x86.Build.0 = Release|Win32
+		{726A859B-22DC-4D9C-9E29-1964709B7050}.Debug|x64.ActiveCfg = Debug|x64
+		{726A859B-22DC-4D9C-9E29-1964709B7050}.Debug|x64.Build.0 = Debug|x64
+		{726A859B-22DC-4D9C-9E29-1964709B7050}.Debug|x86.ActiveCfg = Debug|Win32
+		{726A859B-22DC-4D9C-9E29-1964709B7050}.Debug|x86.Build.0 = Debug|Win32
+		{726A859B-22DC-4D9C-9E29-1964709B7050}.Release|x64.ActiveCfg = Release|x64
+		{726A859B-22DC-4D9C-9E29-1964709B7050}.Release|x64.Build.0 = Release|x64
+		{726A859B-22DC-4D9C-9E29-1964709B7050}.Release|x86.ActiveCfg = Release|Win32
+		{726A859B-22DC-4D9C-9E29-1964709B7050}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
