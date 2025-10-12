@@ -1,6 +1,7 @@
-﻿#include<iostream>
+﻿#define _CRT_SECURE_NO_WARNINGS
+#include<iostream>
 #include<fstream>
-//#include<sstream>
+#include<sstream>
 #include<map>
 #include<list>
 
@@ -8,6 +9,7 @@ using namespace std;
 using std::cin;
 using std::cout;
 using std::endl;
+
 
 #define delimiter "\n--------------------------------------------\n"
 
@@ -54,7 +56,6 @@ public:
 	}
 	*/
 
-
 };
 
 std::ostream& operator<<(std::ostream& os, const Crime& obj) {
@@ -62,16 +63,13 @@ std::ostream& operator<<(std::ostream& os, const Crime& obj) {
 	os << std::left;
 	return os << VIOLATIONS.at(obj.get_violation()) << obj.get_place();
 }
-/*
 
-
-std::ofstream& operator<<(std::ofstream& ofs, const Crime& obj)
-{
+std::ofstream& operator<<(std::ofstream& ofs, const Crime& obj) {
 	ofs << obj.get_violation() << " " << obj.get_place();
 	return ofs;
 }
-std::stringstream& operator>>(std::stringstream& stream, Crime& obj)
-{
+
+std::stringstream& operator>>(std::stringstream& stream, Crime& obj) {
 	int violation;
 	stream >> violation;
 	std::string place;
@@ -80,13 +78,12 @@ std::stringstream& operator>>(std::stringstream& stream, Crime& obj)
 	obj.set_place(place);
 	return stream;
 }
-*/
+
 void print(const std::map<std::string, std::list<Crime>>& base);
 void save(const std::map<std::string, std::list<Crime>>& base, const std::string& filename);
-//std::map<std::string, std::list<Crime>> load(const std::string& filename);
+std::map<std::string, std::list<Crime>> load(const std::string& filename);
 
-
-#define INIT_BASE
+//#define INIT_BASE
 
 void main() {
 	setlocale(LC_ALL, "");
@@ -102,12 +99,10 @@ void main() {
 	print(base);
 	save(base, "base.txt");
 
-#endif // INIT_BASE
+#endif INIT_BASE
 
-
-
-	//std::map<std::string, std::list<Crime>> base = load("base.txt");
-	//print(base);
+	std::map<std::string, std::list<Crime>> base = load("base.txt");
+	print(base);
 }
 void print(const std::map<std::string, std::list<Crime>>& base) {
 	for (std::map<std::string, std::list<Crime>>::const_iterator plate = base.begin(); plate != base.end(); ++plate) {
@@ -122,11 +117,11 @@ void print(const std::map<std::string, std::list<Crime>>& base) {
 void save(const std::map<std::string, std::list<Crime>>& base, const std::string& filename) {
 	std::ofstream fout(filename);
 	for (std::map<std::string, std::list<Crime>>::const_iterator plate = base.begin(); plate != base.end(); ++plate) {
-		fout << plate->first << ":\n";
+		fout << plate->first << ":";
 		for (std::list<Crime>::const_iterator violation = plate->second.begin(); violation != plate->second.end(); ++violation) {
-			fout << "\t" << *violation << endl;
+			fout << *violation << ",";
 		}
-		fout << delimiter << endl;
+		fout << endl;
 	}
 	fout.close();
 	std::string cmd = "notepad ";
@@ -134,17 +129,11 @@ void save(const std::map<std::string, std::list<Crime>>& base, const std::string
 	system(cmd.c_str());
 }
 
-/*
-
-
-std::map<std::string, std::list<Crime>> load(const std::string& filename)
-{
+std::map<std::string, std::list<Crime>> load(const std::string& filename) {
 	std::map<std::string, std::list<Crime>> base;
 	std::ifstream fin(filename);
-	if (fin.is_open())
-	{
-		while (!fin.eof())
-		{
+	if (fin.is_open()) {
+		while (!fin.eof()) {		//пока НЕ КОНЕЦ файла
 			std::string licence_plate;
 			std::getline(fin, licence_plate, ':');
 			cout << licence_plate << "\t";
@@ -153,32 +142,19 @@ std::map<std::string, std::list<Crime>> load(const std::string& filename)
 			fin.getline(all_crimes, SIZE);
 			cout << all_crimes << endl;
 			const char delimiters[] = ",";
-			
-			
-			for (char* pch = strtok(all_crimes, delimiters); pch; pch = strtok(NULL, delimiters))
-				base[licence_plate].push_back(Crime(pch));
+			for (char* pch = strtok(all_crimes, delimiters); pch; pch = strtok(NULL, delimiters)) {
 				
-			
-
-			{
-				/*Crime crime(0,"");
+				Crime crime(0,"");
 				std::stringstream stream(pch);
 				stream >> crime;
 				base[licence_plate].push_back(crime);
 			}
-		
-
 		}
 	}
-	else
-	{
+	else {
 		std::cerr << "Error: File not found" << endl;
 	}
 	fin.close();
 	return base;
 
-
-
-
 }
-*/
