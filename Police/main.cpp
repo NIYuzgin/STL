@@ -4,6 +4,7 @@
 #include<sstream>
 #include<map>
 #include<list>
+#include<time.h>
 
 using namespace std;
 using std::cin;
@@ -31,6 +32,8 @@ std::stringstream& operator>>(std::stringstream& stream, Crime& obj);
 class Crime {
 	int violation;
 	std::string place;
+	tm time;
+
 public:
 	int get_violation()const {
 		return violation;
@@ -38,37 +41,75 @@ public:
 	const std::string& get_place()const {
 		return place;
 	}
+	std::string get_time()const {
+		char stringtime[256]{};
+		strcpy(stringtime, asctime(&time));
+		stringtime[strlen(stringtime) - 1] = 0;
+		return stringtime;
+	}
+	
+	time_t get_timestamp()const {
+		tm time_copy = time;
+		return mktime(&time_copy);
+	}
+
 	void set_violation(int violation) {
 		this->violation = violation;
 	}
 	void set_place(const std::string& place) {
 		this->place = place;
 	}
-	Crime(int violation, const std::string& place) {
+	
+	void set_time(const std::string& time) {
+		char timestring[256] = {};
+		strcpy(timestring, time.c_str());
+		//YYYY.MM.DD HH:MM
+		int parts[5] = {};
+		int n = 0;
+		const char delimiters[] = "./- :";
+		for (char* pch = strtok(timestring, delimiters); pch; pch = strtok(NULL, delimiters))
+			//atoi() - ASCII to INT, - преобразует входную строку в целое число
+			parts[n++] = std::atoi(pch);
+		this->time = {};
+		this->time.tm_year = parts[0] - 1900;
+		this->time.tm_mon = parts[1] - 1;
+		this->time.tm_mday = parts[2];
+		this->time.tm_hour = parts[3];
+		this->time.tm_min = parts[4];
+	}
+	
+	void set_time(time_t time) {
+		this->time = *localtime(&time);
+	}
+	
+	Crime(int violation, const std::string& place, const std::string& time) {
 		set_violation(violation);
 		set_place(place);
+		set_time(time);
 	}
 	explicit Crime(const std::string& str) {
 		std::stringstream stream(str);
 		stream >> *this;
 	}
-
 };
 
 std::ostream& operator<<(std::ostream& os, const Crime& obj) {
 	os.width(44);
 	os << std::left;
-	return os << VIOLATIONS.at(obj.get_violation()) << obj.get_place();
+	return os << obj.get_time() << VIOLATIONS.at(obj.get_violation()) << obj.get_place();
 }
 
 std::ofstream& operator<<(std::ofstream& ofs, const Crime& obj) {
-	ofs << obj.get_violation() << " " << obj.get_place();
+	ofs << obj.get_violation() << " " << obj.get_timestamp() << " " << obj.get_place();
 	return ofs;
 }
 
 std::stringstream& operator>>(std::stringstream& stream, Crime& obj) {
 	int violation;
 	stream >> violation;
+	time_t time;
+	stream >> time;
+	obj.set_time(time);
 	std::string place;
 	std::getline(stream, place);
 	obj.set_violation(violation);
@@ -81,6 +122,8 @@ void save(const std::map<std::string, std::list<Crime>>& base, const std::string
 std::map<std::string, std::list<Crime>> load(const std::string& filename);
 
 //#define INIT_BASE
+//#define INIT_BASE_2
+#define LOAD_CHECK
 
 void main() {
 	setlocale(LC_ALL, "");
@@ -88,7 +131,7 @@ void main() {
 #ifdef INIT_BASE
 	
 	std::map<std::string, std::list<Crime>> base = {
-		{"a123bb", {Crime(2, "ул. Пролетарская"), Crime(3, "ул. Ватутина")}	},
+		{"a123bb", {Crime(2, "ул. Пролетарская"), Crime(3, "ул. Ватутина")}},
 		{"a777aa", {Crime(4, "ул. Ленина"), Crime(5, "ул. Ленина"), Crime(7, "ул. Энтузиастов"), Crime(8, "ул. Энтузиастов")} },
 		{"a001eg", {Crime(5, "ул. Октябрьская"), Crime(5, "ул. Октябрьская"), Crime(7, "ул. Космическая"), Crime(8, "ул. Энтузиастов")} }
 	};
@@ -98,8 +141,24 @@ void main() {
 
 #endif INIT_BASE
 
+#ifdef INIT_BASE_2
+	
+	std::map<std::string, std::list<Crime>> base = {
+		{"a123bb", {Crime(2, "ул. Пролетарская", "2025.01.05 11:12"), Crime(3, "ул. Ватутина", "2025/01/06 15:25")}},
+		{"a777aa", {Crime(4, "ул. Ленина","2024.04.04 16:04"), Crime(5, "ул. Ленина","2024.04.04 16:14"), Crime(7, "ул. Энтузиастов","2024.04.04 16:24"), Crime(8, "ул. Энтузиастов","2024.04.04 16:34")} },
+		{"a001eg", {Crime(5, "ул. Октябрьская","2024.07.08 19:08"), Crime(5, "ул. Октябрьская","2024.07.08 19:28"), Crime(7, "ул. Космическая","2024.07.08 19:38"), Crime(8, "ул. Энтузиастов","2024.07.08 19:48")} }
+	};
+	
+	print(base);
+	save(base, "base.txt");
+
+#endif INIT_BASE_2
+
+#ifdef LOAD_CHECK
 	std::map<std::string, std::list<Crime>> base = load("base.txt");
 	print(base);
+#endif LOAD_CHECK
+
 }
 void print(const std::map<std::string, std::list<Crime>>& base) {
 	for (std::map<std::string, std::list<Crime>>::const_iterator plate = base.begin(); plate != base.end(); ++plate) {
@@ -147,7 +206,6 @@ std::map<std::string, std::list<Crime>> load(const std::string& filename) {
 				stream >> crime;
 				base[licence_plate].push_back(crime);
 				*/
-				
 			}
 		}
 	}
@@ -156,5 +214,4 @@ std::map<std::string, std::list<Crime>> load(const std::string& filename) {
 	}
 	fin.close();
 	return base;
-
 }
